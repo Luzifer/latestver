@@ -53,7 +53,7 @@ class CatalogController < ApplicationController
         end
         badge_label = badge_label.to_s.gsub('-', '--')
         badge_version = badge_version.to_s.gsub('-', '--')
-        badge_url = "https://img.shields.io/badge/#{badge_label}-#{badge_version}-#{badge_color}.svg"
+        badge_url = "https://badges.fyi/static/#{badge_label}/#{badge_version}/#{badge_color}"
 
         if Rails.env.development? or ENV['PROXY_BADGES']
           max_redirects = 5
