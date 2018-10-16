@@ -27,12 +27,12 @@ module Catalog
 
     def vendor_urls
       @vurls ||= {
-          'jdk8' => 'http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html',
-          'jre8' => 'http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html',
-          'jdk7' => 'http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
-          'jre7' => 'http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
-          'jdk6' => 'http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
-          'jre6' => 'http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
+          'jdk8' => 'https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html',
+          'jre8' => 'https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html',
+          'jdk7' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
+          'jre7' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
+          'jdk6' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
+          'jre6' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
       }
     end
 
