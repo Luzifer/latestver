@@ -27,22 +27,23 @@ module Catalog
 
     def vendor_urls
       @vurls ||= {
-          'jdk8' => 'https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html',
-          'jre8' => 'https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html',
-          'jdk7' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
-          'jre7' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
-          'jdk6' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
-          'jre6' => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
+          'jdk11' => 'https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html',
+          'jdk8'  => 'https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html',
+          'jre8'  => 'https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html',
+          'jdk7'  => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
+          'jre7'  => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html',
+          'jdk6'  => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
+          'jre6'  => 'https://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html',
       }
     end
 
     def check_remote_version
       case tag
-        when /jdk[0-9]|jre[0-9]/
+        when /jdk[0-9]+|jre[0-9]+/
           major = scan_number(tag)
           raise "Unknown Java tag (#{tag})" unless vendor_urls.include?(tag)
           html = open(vendor_urls[tag]) { |f| f.read }
-          if (m = html.match(%r{/java/jdk/(#{major}u[0-9]+-b[0-9]+)/([a-f0-9]{32})?}))
+          if (m = html.match(%r{/java/jdk/(#{major}u[0-9]+-b[0-9]+|#{major}[0-9.+]+)/([a-f0-9]{32})?}))
             {
                 version: m[1],
                 download_hash: m[2]
@@ -74,12 +75,21 @@ module Catalog
     def downloads
       return Hash.new unless version
       h = version_segments[0].to_i >= 8 && download_hash.to_s + '/' || ''
-      {
-          'rpm': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-linux-x64.rpm",
-          'tgz': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-linux-x64.tar.gz",
-          'dmg': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-macosx-x64.dmg",
-          'exe': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-windows-x64.exe",
-      }
+      if version_segments[0].to_i < 11
+        return {
+            'rpm': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-linux-x64.rpm",
+            'tgz': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-linux-x64.tar.gz",
+            'dmg': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-macosx-x64.dmg",
+            'exe': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version_segments[0]}u#{version_segments[1]}-windows-x64.exe",
+        }
+      else
+        return {
+            'rpm': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version.split("+")[0]}_linux-x64_bin.rpm",
+            'tgz': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version.split("+")[0]}_linux-x64_bin.tar.gz",
+            'dmg': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version.split("+")[0]}_macosx-x64_bin.dmg",
+            'exe': "http://download.oracle.com/otn-pub/java/jdk/#{version}/#{h}#{java_type}-#{version.split("+")[0]}_windows-x64_bin.exe",
+        }
+      end
     end
 
     def command_samples
