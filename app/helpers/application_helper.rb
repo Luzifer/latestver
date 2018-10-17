@@ -1,4 +1,5 @@
 require 'gems'
+require 'uri'
 
 module ApplicationHelper
   def product_update?
@@ -48,7 +49,7 @@ module ApplicationHelper
         alt: I18n.t('app.nav.title'),
         src: catalog_view_api_url(name: entry.name, tag: entry.tag, format: 'svg')
     }
-    data[:src] += "?v=#{version}" if version
+    data[:src] += "?v=#{URI.escape(version, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}" if version
     case type.to_s
       when 'md'
         '[![%{alt}](%{src})](%{href})' % data
