@@ -28,7 +28,8 @@ module Catalog
       @vurls ||= {
         'bamboo' => 'https://my.atlassian.com/download/feeds/current/bamboo.json',
         'bitbucket' => 'https://my.atlassian.com/download/feeds/current/stash.json',
-        'confluence' => 'https://my.atlassian.com/download/feeds/current/confluence.json',
+        'confluence-lts' => 'https://my.atlassian.com/download/feeds/current/confluence.json',
+        'confluence' => 'https://my.atlassian.com/download/feeds/archived/confluence.json',
         'crowd' => 'https://my.atlassian.com/download/feeds/current/crowd.json',
         'jira' => 'https://my.atlassian.com/download/feeds/current/jira-software.json',
       }
