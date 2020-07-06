@@ -6,7 +6,7 @@ COPY bower.json /app/
 WORKDIR /app
 
 RUN set -ex \
- && apk add --no-update \
+ && apk add \
       git \
  && npm install -g bower \
  && bower --allow-root install \
